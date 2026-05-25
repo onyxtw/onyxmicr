@@ -1,9 +1,9 @@
 {
   "version": 2,
+  "builds": [
+    { "src": "api/runtime/cloud.js", "use": "@vercel/node" }
+  ],
   "routes": [
-    {
-      "src": "/runtime/cloud",
-      "dest": "/api/runtime/cloud.js"
-    }
+    { "src": "/runtime/cloud", "dest": "/api/runtime/cloud.js" }
   ]
 }
