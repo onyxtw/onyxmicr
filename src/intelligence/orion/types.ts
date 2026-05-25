@@ -1,0 +1,13 @@
+export type Mode = "social" | "technical" | "collaboration";
+export type Shape = "expand" | "contract" | "bottleneck" | "branch" | "oscillate";
+export type VectorDirection = "inward" | "outward" | "forward" | "backward" | "downward" | "upward";
+export type SemanticDensity = number;
+export type SemanticField = { intensity: number; tension: number; coherence: number; gradient: VectorDirection; };
+export type SemanticState = { density: SemanticDensity; has_structure: boolean; reference_scope: "self" | "system" | "we"; raw_text: string; };
+export type CompressedSemantic = { shape: Shape; vector: VectorDirection; node: string; };
+export type SemanticGraphNode = { id: string; shape: Shape; vector: VectorDirection; field: SemanticField; timestamp: number; };
+export type SemanticGraphEdge = { from: string; to: string; weight: number; relation: "cause" | "follow" | "contrast" | "support" | "unknown"; };
+export type SemanticGraph = { nodes: SemanticGraphNode[]; edges: SemanticGraphEdge[]; };
+export type SemanticPatterns = { dominant_shape: Shape; dominant_vector: VectorDirection; tension_profile: number[]; coherence_profile: number[]; };
+export type SemanticMemory = { graph: SemanticGraph; patterns: SemanticPatterns; history: { timestamp: number; node: SemanticGraphNode }[]; };
+export type ToneTemplateId = "social.shape-rhythm" | "technical.module-bottleneck" | "collab.center-vector";
