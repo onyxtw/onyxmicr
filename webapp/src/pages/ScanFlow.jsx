@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function TranslateFlow() {
+export default function ScanFlow() {
   const [input, setInput] = useState("");
   const [result, setResult] = useState("");
 
@@ -8,7 +8,7 @@ export default function TranslateFlow() {
     const res = await fetch("https://onyx-cloudruntime.vercel.app/api/runtime/cloud", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ flow: "translate", input })
+      body: JSON.stringify({ flow: "scan", input })
     });
 
     const json = await res.json();
@@ -17,7 +17,7 @@ export default function TranslateFlow() {
 
   return (
     <div>
-      <h2>Translate Flow</h2>
+      <h2>Scan Flow</h2>
       <textarea value={input} onChange={e => setInput(e.target.value)} />
       <button onClick={run}>Run</button>
       <pre>{result}</pre>
