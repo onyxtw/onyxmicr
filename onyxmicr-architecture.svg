@@ -1,0 +1,33 @@
+<svg width="900" height="600" xmlns="http://www.w3.org/2000/svg">
+  <rect x="50" y="50" width="800" height="500" rx="20" fill="#f0f0f0" stroke="#333" stroke-width="2"/>
+  <text x="450" y="90" font-size="28" text-anchor="middle" font-family="Arial">OnyxMicr Architecture</text>
+
+  <!-- WebApp -->
+  <rect x="100" y="150" width="300" height="150" rx="15" fill="#d0e8ff" stroke="#333"/>
+  <text x="250" y="180" font-size="20" text-anchor="middle">WebApp</text>
+  <text x="250" y="210" font-size="14" text-anchor="middle">React + Vite</text>
+  <text x="250" y="240" font-size="14" text-anchor="middle">UIFlow (5 Flows)</text>
+
+  <!-- CloudRuntime -->
+  <rect x="500" y="150" width="300" height="150" rx="15" fill="#ffe4c4" stroke="#333"/>
+  <text x="650" y="180" font-size="20" text-anchor="middle">CloudRuntime</text>
+  <text x="650" y="210" font-size="14" text-anchor="middle">Flow Router</text>
+  <text x="650" y="240" font-size="14" text-anchor="middle">Provider Layer</text>
+
+  <!-- Providers -->
+  <rect x="300" y="350" width="300" height="150" rx="15" fill="#e8ffd0" stroke="#333"/>
+  <text x="450" y="380" font-size="20" text-anchor="middle">Providers</text>
+  <text x="450" y="410" font-size="14" text-anchor="middle">Gemini</text>
+  <text x="450" y="430" font-size="14" text-anchor="middle">Copilot</text>
+  <text x="450" y="450" font-size="14" text-anchor="middle">Claude</text>
+
+  <!-- Arrows -->
+  <line x1="400" y1="225" x2="500" y2="225" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="650" y1="300" x2="450" y2="350" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="5" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#333"/>
+    </marker>
+  </defs>
+</svg>
