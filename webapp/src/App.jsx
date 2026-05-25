@@ -1,8 +1,14 @@
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { routes } from "./routes";
+
 export default function App() {
   return (
-    <div style={{ padding: 40, fontSize: 24 }}>
-      <h1>OnyxMicr WebApp</h1>
-      <p>Frontend is running successfully.</p>
-    </div>
-  )
+    <BrowserRouter>
+      <Routes>
+        {routes.map((r, i) => (
+          <Route key={i} path={r.path} element={r.element} />
+        ))}
+      </Routes>
+    </BrowserRouter>
+  );
 }
