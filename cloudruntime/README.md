@@ -13,3 +13,11 @@ POST /runtime/cloud
   "action": "string",
   "payload": {}
 }
+{
+  "status": "ok",
+  "provider": "gemini | copilot | claude",
+  "duration_ms": 123,
+  "result": {}
+}
+
+---
