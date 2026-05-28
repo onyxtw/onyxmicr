@@ -1,0 +1,162 @@
+#!/usr/bin/env node
+
+const { spawn, execSync } = require("child_process");
+
+const args = process.argv.slice(2);
+
+function run(name, cmd, args) {
+  const p = spawn(cmd, args, { stdio: "inherit" });
+  p.on("close", () => console.log(`🔸 ${name} 已結束`));
+}
+
+function openTerminal(command) {
+  spawn("osascript", [
+    "-e",
+    `tell application "Terminal" to do script "${command}"`
+  ]);
+}
+
+if (args.length === 0) {
+  console.log("ONYX CLI");
+  process.exit(0);
+}
+
+//
+// ───────────────────────────────────────────────
+//  基本指令
+// ───────────────────────────────────────────────
+//
+
+if (args[0] === "loop") {
+  require("./api/runtime/onyx-loop");
+  console.log("🟠 ONYX Loop 已啟動");
+}
+
+else if (args[0] === "cycle") {
+  require("./api/runtime/onyx-cycle");
+  console.log("🟡 ONYX Cycle 已啟動");
+}
+
+else if (args[0] === "doctor") {
+  require("./onyx-health");
+}
+
+//
+// ───────────────────────────────────────────────
+//  一鍵啟動器
+// ───────────────────────────────────────────────
+//
+
+else if (args[0] === "start") {
+  console.log("🔵 ONYX Runtime — 一鍵啟動中…");
+
+  run("CloudRuntime", "node", ["server.js"]);
+  setTimeout(() => run("ONYX Loop", "onyx", ["loop"]), 1000);
+  setTimeout(() => run("ONYX Cycle", "onyx", ["cycle"]), 2000);
+
+  setTimeout(() => {
+    console.log("🟢 Node REPL 已啟動，可輸入 global.LFP = {...}");
+    run("Node REPL", "node", []);
+  }, 3000);
+}
+
+//
+// ───────────────────────────────────────────────
+//  一鍵停止器
+// ───────────────────────────────────────────────
+//
+
+else if (args[0] === "stop") {
+  console.log("🔴 正在停止所有 ONYX 進程…");
+
+  try {
+    execSync("pkill -f 'node server.js'");
+    execSync("pkill -f 'onyx loop'");
+    execSync("pkill -f 'onyx cycle'");
+    execSync("pkill -f 'node'");
+    console.log("🛑 ONYX 已全部停止");
+  } catch (e) {
+    console.log("⚠️ 部分進程不存在，已忽略");
+  }
+}
+
+//
+// ───────────────────────────────────────────────
+//  一鍵重啟器
+// ───────────────────────────────────────────────
+//
+
+else if (args[0] === "restart") {
+  console.log("🟣 ONYX Runtime — 一鍵重啟中…");
+
+  try {
+    execSync("pkill -f 'node server.js'");
+    execSync("pkill -f 'onyx loop'");
+    execSync("pkill -f 'onyx cycle'");
+    execSync("pkill -f 'node'");
+  } catch {}
+
+  console.log("🔄 停止完成，正在重新啟動…");
+
+  run("CloudRuntime", "node", ["server.js"]);
+  setTimeout(() => run("ONYX Loop", "onyx", ["loop"]), 1000);
+  setTimeout(() => run("ONYX Cycle", "onyx", ["cycle"]), 2000);
+
+  setTimeout(() => {
+    console.log("🟢 Node REPL 已重新啟動，可輸入 global.LFP = {...}");
+    run("Node REPL", "node", []);
+  }, 3000);
+}
+
+//
+// ───────────────────────────────────────────────
+//  趨勢引擎（v1.4）
+// ───────────────────────────────────────────────
+//
+
+else if (args[0] === "trend") {
+  const trendEngine = require("./trend-engine");
+  const t = trendEngine.computeTrend();
+  console.log("📈 當前地脈趨勢（-1 ~ +1）:", t);
+}
+
+//
+// ───────────────────────────────────────────────
+//  模式引擎（v1.5）
+// ───────────────────────────────────────────────
+//
+
+else if (args[0] === "pattern") {
+  const pattern = require("./pattern-engine");
+  const result = pattern.analyze();
+  console.log("🔮 地脈模式分析：", result);
+}
+
+//
+// ───────────────────────────────────────────────
+//  自動五視窗啟動器（ONYX dev）
+// ───────────────────────────────────────────────
+//
+
+else if (args[0] === "dev") {
+  console.log("🟦 ONYX DEV MODE — 自動啟動五個視窗");
+
+  const base = "cd ~/onyxmicr/cloudruntime";
+
+  openTerminal(`${base} && node server.js`);
+  openTerminal(`${base} && onyx loop`);
+  openTerminal(`${base} && onyx cycle`);
+  openTerminal(`${base} && node`);
+  openTerminal(`${base} && echo '可輸入 onyx trend / pattern / restart / stop'`);
+}
+
+else {
+  console.log("未知指令：", args[0]);
+}
+
+
+else if (args[0] === 'pattern') {
+const pattern = require('./pattern-engine');
+const result = pattern.analyze();
+console.log('🔮 地脈模式分析：', result);
+}

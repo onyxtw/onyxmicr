@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Onyx Center · Lidao Node 0</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --bg: #05060a;
+      --bg-alt: #0b0d14;
+      --panel: #11141f;
+      --accent: #4fd1c5;
+      --accent-soft: rgba(79, 209, 197, 0.12);
+      --text: #f5f7ff;
+      --muted: #8b92a7;
+      --danger: #f56565;
+      --ok: #48bb78;
+      --warn: #ecc94b;
+      --border: #1f2433;
+      --radius: 10px;
+      --shadow: 0 18px 40px rgba(0, 0, 0, 0.55);
+      --font: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "SF Pro Display", "Segoe UI", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font);
+      background: radial-gradient(circle at top, #15192b 0, #05060a 55%);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: linear-gradient(to right, #05060a, #090c14);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-mark {
+      width: 26px;
+      height: 26px;
+      border-radius: 8px;
+      background: radial-gradient(circle at 30% 20%, #7fffd4, #1a9c8a 45%, #05060a 100%);
+      box-shadow: 0 0 18px rgba(79, 209, 197, 0.7);
+    }
+
+    .brand-text-main {
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      font-size: 13px;
+      color: var(--accent);
+    }
+
+    .brand-text-sub {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--ok);
+      box-shadow: 0 0 10px rgba(72, 187, 120, 0.8);
+    }
+
+    .pill {
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(10, 14, 24, 0.9);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    main {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 220px minmax(0, 1.8fr) minmax(0, 1.2fr);
+      gap: 16px;
+      padding: 18px 20px 20px;
+    }
+
+    aside {
+      background: linear-gradient(180deg, #070914, #05060a);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      padding: 14px 12px;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .nav-section-title {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
+    .nav-item {
+      padding: 7px 9px;
+      border-radius: 7px;
+      font-size: 13px;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      transition: background 0.15s ease, color 0.15s ease, transform 0.08s ease;
+    }
+
+    .nav-item span {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .nav-item.active {
+      background: var(--accent-soft);
+      color: var(--accent);
+      transform: translateY(-1px);
+    }
+
+    .nav-item:hover {
+      background: rgba(255, 255, 255, 0.03);
+      color: var(--text);
+    }
+
+    .nav-badge {
+      font-size: 11px;
+      padding: 2px 7px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+    }
+
+    .panel {
+      background: radial-gradient(circle at top left, #171b2a 0, #05060a 55%);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      padding: 14px 14px 16px;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 4px;
+    }
+
+    .panel-title {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--muted);
+    }
+
+    .panel-subtitle {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .tag {
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(5, 6, 10, 0.9);
+      color: var(--muted);
+    }
+
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .metric-card {
+      background: rgba(5, 6, 10, 0.9);
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      padding: 8px 9px;
+      font-size: 11px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .metric-label {
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    .metric-value {
+      font-size: 15px;
+      font-weight: 500;
+    }
+
+    .metric-ok {
+      color: var(--ok);
+    }
+
+    .metric-warn {
+      color: var(--warn);
+    }
+
+    .metric-bad {
+      color: var(--danger);
+    }
+
+    .services-list {
+      margin-top: 6px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      overflow: hidden;
+      background: rgba(5, 6, 10, 0.9);
+    }
+
+    .service-row {
+      display: grid;
+      grid-template-columns: 1.4fr 0.7fr 0.7fr 0.9fr;
+      padding: 7px 9px;
+      font-size: 12px;
+      align-items: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+    }
+
+    .service-row.header {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      background: rgba(255, 255, 255, 0.01);
+    }
+
+    .service-row:last-child {
+      border-bottom: none;
+    }
+
+    .service-name-main {
+      font-weight: 500;
+    }
+
+    .service-name-sub {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+    }
+
+    .status-pill.ok {
+      color: var(--ok);
+      background: rgba(72, 187, 120, 0.08);
+      border-color: rgba(72, 187, 120, 0.4);
+    }
+
+    .status-pill.warn {
+      color: var(--warn);
+      background: rgba(236, 201, 75, 0.08);
+      border-color: rgba(236, 201, 75, 0.4);
+    }
+
+    .status-pill.bad {
+      color: var(--danger);
+      background: rgba(245, 101, 101, 0.08);
+      border-color: rgba(245, 101, 101, 0.4);
+    }
+
+    .status-dot-mini {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: currentColor;
+    }
+
+    .actions {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      font-size: 11px;
+      padding: 4px 9px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(5, 6, 10, 0.9);
+      color: var(--muted);
+      cursor: pointer;
+      transition: background 0.12s ease, color 0.12s ease, transform 0.08s ease;
+    }
+
+    .btn.primary {
+      border-color: rgba(79, 209, 197, 0.7);
+      background: radial-gradient(circle at top, #1a9c8a, #05060a);
+      color: #e6fffb;
+    }
+
+    .btn:hover {
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text);
+      transform: translateY(-0.5px);
+    }
+
+    .btn.primary:hover {
+      background: radial-gradient(circle at top, #2fdac3, #05060a);
+    }
+
+    .ai-panel {
+      margin-top: 4px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: rgba(5, 6, 10, 0.9);
+      padding: 9px 10px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .ai-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+    }
+
+    .ai-input-row {
+      display: flex;
+      gap: 6px;
+      margin-top: 2px;
+    }
+
+    .ai-input {
+      flex: 1;
+      font-size: 12px;
+      padding: 6px 8px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(3, 5, 10, 0.9);
+      color: var(--text);
+      outline: none;
+    }
+
+    .ai-input::placeholder {
+      color: #4b5266;
+    }
+
+    .ai-note {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .log-panel {
+      margin-top: 4px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: rgba(5, 6, 10, 0.9);
+      padding: 8px 9px;
+      font-family: "SF Mono", ui-monospace, Menlo, Monaco, Consolas, monospace;
+      font-size: 11px;
+      color: #a0aec0;
+      max-height: 180px;
+      overflow: auto;
+      white-space: pre-wrap;
+    }
+
+    footer {
+      padding: 8px 20px 12px;
+      font-size: 11px;
+      color: var(--muted);
+      display: flex;
+      justify-content: space-between;
+      border-top: 1px solid var(--border);
+      background: linear-gradient(to right, #05060a, #090c14);
+    }
+
+    @media (max-width: 1024px) {
+      main {
+        grid-template-columns: 1fr;
+      }
+      aside {
+        order: -1;
+        flex-direction: row;
+        flex-wrap: wrap;
+      }
+      .nav-item {
+        flex: 1 1 45%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <div class="brand-mark"></div>
+      <div>
+        <div class="brand-text-main">ONYX CENTER</div>
+        <div class="brand-text-sub">Lidao Node 0 · Cloud Console</div>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="pill">
+        <span class="status-dot"></span>
+        <span>Node 0 · Online</span>
+      </div>
+      <div class="pill">
+        Region: Japan East (Azure)
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- 左側：導覽 -->
+    <aside>
+      <div>
+        <div class="nav-section-title">Core</div>
+        <div class="nav-item active">
+          <span>Dashboard</span>
+          <span class="nav-badge">LIVE</span>
+        </div>
+        <div class="nav-item">
+          <span>Deploy</span>
+        </div>
+        <div class="nav-item">
+          <span>Services</span>
+        </div>
+      </div>
+
+      <div>
+        <div class="nav-section-title">System</div>
+        <div class="nav-item">
+          <span>Content</span>
+        </div>
+        <div class="nav-item">
+          <span>Modules</span>
+        </div>
+        <div class="nav-item">
+          <span>Semantic</span>
+        </div>
+      </div>
+
+      <div>
+        <div class="nav-section-title">Lidao</div>
+        <div class="nav-item">
+          <span>Lidao Root</span>
+        </div>
+        <div class="nav-item">
+          <span>.lidao TLD</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- 中間：Node 0 + Services -->
+    <section class="panel">
+      <div class="panel-header">
+        <div>
+          <div class="panel-title">Node 0 · Lidao</div>
+          <div class="panel-subtitle">Azure VM · Onyx Primary Compute</div>
+        </div>
+        <div class="tag">ONYX NODE 0</div>
+      </div>
+
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <div class="metric-label">CPU</div>
+          <div class="metric-value metric-ok" id="metric-cpu">23%</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Memory</div>
+          <div class="metric-value metric-ok" id="metric-ram">41%</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Disk</div>
+          <div class="metric-value metric-ok" id="metric-disk">12%</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Docker</div>
+          <div class="metric-value metric-ok" id="metric-docker">6 / 6</div>
+        </div>
+      </div>
+
+      <div class="panel-header" style="margin-top:10px;">
+        <div>
+          <div class="panel-title">Services</div>
+          <div class="panel-subtitle">Onyx Web · API · Center · DNS · Semantic</div>
+        </div>
+        <div class="actions">
+          <button class="btn">Refresh</button>
+          <button class="btn primary">Redeploy All</button>
+        </div>
+      </div>
+
+      <div class="services-list">
+        <div class="service-row header">
+          <div>Service</div>
+          <div>Status</div>
+          <div>Version</div>
+          <div>Actions</div>
+        </div>
+
+        <div class="service-row">
+          <div>
+            <div class="service-name-main">Onyx Web</div>
+            <div class="service-name-sub">Public site · www.onyx.tw</div>
+          </div>
+          <div>
+            <span class="status-pill ok">
+              <span class="status-dot-mini"></span>
+              Running
+            </span>
+          </div>
+          <div>v0.1.0</div>
+          <div class="actions">
+            <button class="btn">Restart</button>
+            <button class="btn">Logs</button>
+          </div>
+        </div>
+
+        <div class="service-row">
+          <div>
+            <div class="service-name-main">Onyx API</div>
+            <div class="service-name-sub">Backend · api.onyx.tw</div>
+          </div>
+          <div>
+            <span class="status-pill ok">
+              <span class="status-dot-mini"></span>
+              Running
+            </span>
+          </div>
+          <div>v0.1.0</div>
+          <div class="actions">
+            <button class="btn">Restart</button>
+            <button class="btn">Logs</button>
+          </div>
+        </div>
+
+        <div class="service-row">
+          <div>
+            <div class="service-name-main">Onyx Center</div>
+            <div class="service-name-sub">Cloud Console · center.onyx.tw</div>
+          </div>
+          <div>
+            <span class="status-pill ok">
+              <span class="status-dot-mini"></span>
+              Running
+            </span>
+          </div>
+          <div>v0.1.0</div>
+          <div class="actions">
+            <button class="btn">Restart</button>
+            <button class="btn">Logs</button>
+          </div>
+        </div>
+
+        <div class="service-row">
+          <div>
+            <div class="service-name-main">Internal DNS</div>
+            <div class="service-name-sub">.lidao · internal zone</div>
+          </div>
+          <div>
+            <span class="status-pill ok">
+              <span class="status-dot-mini"></span>
+              Running
+            </span>
+          </div>
+          <div>v0.1.0</div>
+          <div class="actions">
+            <button class="btn">Restart</button>
+            <button class="btn">Records</button>
+          </div>
+        </div>
+
+        <div class="service-row">
+          <div>
+            <div class="service-name-main">Semantic Engine</div>
+            <div class="service-name-sub">Plan / Execute · mock</div>
+          </div>
+          <div>
+            <span class="status-pill warn">
+              <span class="status-dot-mini"></span>
+              Mock
+            </span>
+          </div>
+          <div>v0.0.1</div>
+          <div class="actions">
+            <button class="btn">Inspect</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="ai-panel">
+        <div class="ai-label">Semantic Command</div>
+        <div class="ai-input-row">
+          <input
+            class="ai-input"
+            id="ai-input"
+            placeholder="例如：重新部署 Onyx Web 並重啟 Nginx"
+          />
+          <button class="btn primary" id="ai-run">Plan</button>
+        </div>
+        <div class="ai-note">
+          目前為 mock 模式：指令會顯示在下方 Log，不會真的執行。
+        </div>
+      </div>
+
+      <div class="log-panel" id="log-panel">
+[Onyx Center] Ready.
+Semantic engine: mock mode.
+      </div>
+    </section>
+
+    <!-- 右側：Node / Mock / Info -->
+    <section class="panel">
+      <div class="panel-header">
+        <div>
+          <div class="panel-title">Node 0 · Telemetry</div>
+          <div class="panel-subtitle">Mock data from /api/mock/status.json</div>
+        </div>
+        <div class="actions">
+          <button class="btn" id="btn-refresh-mock">Refresh Mock</button>
+        </div>
+      </div>
+
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <div class="metric-label">Node</div>
+          <div class="metric-value" id="node-name">Lidao Node 0</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Region</div>
+          <div class="metric-value" id="node-region">Japan East</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Uptime</div>
+          <div class="metric-value" id="node-uptime">8 days</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Status</div>
+          <div class="metric-value metric-ok" id="node-status">online</div>
+        </div>
+      </div>
+
+      <div class="panel-header" style="margin-top:10px;">
+        <div>
+          <div class="panel-title">Onyx Center · Info</div>
+          <div class="panel-subtitle">Static HTML · GitHub · Nginx</div>
+        </div>
+      </div>
+
+      <div class="log-panel" style="max-height: 220px;">
+ONYX CENTER v0.1.0
+
+- 前端：這個 HTML 檔案（public/index.html）
+- Repo：Onyx-Center（GitHub）
+- 部署：Node 0 · Nginx · /srv/onyx-center
+- Mock：/api/mock/status.json, /api/semantic/plan.json
+
+未來擴充：
+- 真實 Node 0 API
+- 真實 Semantic Engine
+- 真實 Deploy Pipeline
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div>ONYX · Lidao Prototype · Node 0</div>
+    <div>Center console · static mock · 2026</div>
+  </footer>
+
+  <script>
+    const logPanel = document.getElementById("log-panel");
+    const aiInput = document.getElementById("ai-input");
+    const aiRun = document.getElementById("ai-run");
+    const btnRefreshMock = document.getElementById("btn-refresh-mock");
+
+    function appendLog(line) {
+      const now = new Date();
+      const ts = now.toISOString().split("T")[1].split(".")[0];
+      logPanel.textContent += "\\n[" + ts + "] " + line;
+      logPanel.scrollTop = logPanel.scrollHeight;
+    }
+
+    aiRun?.addEventListener("click", () => {
+      const v = (aiInput?.value || "").trim();
+      if (!v) return;
+      appendLog("Semantic plan (mock): " + v);
+      aiInput.value = "";
+    });
+
+    btnRefreshMock?.addEventListener("click", async () => {
+      appendLog("Fetching /api/mock/status.json (mock)...");
+      try {
+        const res = await fetch("/api/mock/status.json");
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        const data = await res.json();
+
+        document.getElementById("metric-cpu").textContent = data.cpu + "%";
+        document.getElementById("metric-ram").textContent = data.memory + "%";
+        document.getElementById("metric-disk").textContent = data.disk + "%";
+        document.getElementById("metric-docker").textContent =
+          data.docker + " / 6";
+
+        document.getElementById("node-name").textContent = data.node;
+        document.getElementById("node-region").textContent = data.region;
+        document.getElementById("node-uptime").textContent = data.uptime;
+        document.getElementById("node-status").textContent = data.status;
+
+        appendLog("Mock telemetry updated.");
+      } catch (e) {
+        appendLog("Failed to fetch mock status: " + e.message);
+      }
+    });
+  </script>
+</body>
+</html>
+
